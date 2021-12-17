@@ -85,7 +85,7 @@ const GroupSettings: React.FC = () => {
     }
 
     return <div className={'inline-block'}>
-        <button onClick={() => setOpen(true)} className={'ml-3 py-1 px-3 text-sm rounded-2xl cursor-pointer border-2 border-blue-500 inline-flex items-center justify-center hover:shadow-md transition-shadow duration-500'}>
+        <button onClick={() => setOpen(true)} className={'mr-3 py-1 px-3 text-sm rounded cursor-pointer border border-gray-300 inline-flex items-center justify-center hover:shadow-md hover:border-gray-500 transition-all duration-300'}>
             Group Settings
         </button>
 

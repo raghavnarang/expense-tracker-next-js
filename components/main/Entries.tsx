@@ -28,7 +28,7 @@ const Entries: React.FC = () => {
     if (isGroupsLoading || isLoading) {
         return <div className={'h-4/6 overflow-y-auto'}>
             <EntryHead />
-            {Array.from(Array(10).keys()).map(key =>
+            {Array.from(Array(5).keys()).map(key =>
                 <EntrySkeleton key={key} />
             )}
         </div>

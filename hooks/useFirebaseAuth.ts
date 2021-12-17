@@ -1,6 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, EmailAuthProvider, GoogleAuthProvider, GithubAuthProvider, User } from 'firebase/auth';
+import { getAuth, EmailAuthProvider, GoogleAuthProvider, GithubAuthProvider, User, Auth } from 'firebase/auth';
 import { useEffect, useState, createContext, useContext } from "react";
+
+// Import the css only on the client.
+require('firebaseui/dist/firebaseui.css');
 
 const firebaseConfig = {
     apiKey: "AIzaSyBNEWQUe-dYrT2JGuOOJlrZqt26k5dSiwY",
@@ -17,28 +20,37 @@ const auth = getAuth(app);
 type FirebaseAuthObj = {
     user: User | null,
     isLogin: boolean,
-    loginId: string
+    loginId: string,
+    isLoading: boolean,
+    auth: Auth
 }
 
 export const defaultFirebaseAuthVal: FirebaseAuthObj = {
     user: auth.currentUser,
     isLogin: !!auth.currentUser,
-    loginId: 'et-login'
+    loginId: 'et-login',
+    isLoading: true,
+    auth
 }
+
+let ui: any;
 
 export const useFirebaseAuthSetup = (): FirebaseAuthObj => {
     const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!!defaultFirebaseAuthVal.loginId) {
-            // Import the css only on the client.
-            require('firebaseui/dist/firebaseui.css');
+        // Init Firebase UI when Auth state is loaded, 
+        // and Current User is not logged in
+        if (!isLoading && !currentUser) {
 
             // Firebase UI only works on the Client. So we're loading the package in `componentDidMount`
             // So that this works when doing server-side rendering.
             const firebaseui = require('firebaseui');
 
-            const ui = new firebaseui.auth.AuthUI(auth);
+            if (!ui) {
+                ui = new firebaseui.auth.AuthUI(auth);
+            }
 
             ui.start(`#${defaultFirebaseAuthVal.loginId}`, {
                 signInOptions: [
@@ -47,17 +59,21 @@ export const useFirebaseAuthSetup = (): FirebaseAuthObj => {
                     GithubAuthProvider.PROVIDER_ID
                 ]
             });
-
-            auth.onAuthStateChanged(() => {
-                setCurrentUser(auth.currentUser);
-            });
         }
+    }, [isLoading, currentUser]);
+
+    useEffect(() => {
+        auth.onAuthStateChanged(() => {
+            setCurrentUser(auth.currentUser);
+            setLoading(false);
+        });
     }, []);
 
     return {
         ...defaultFirebaseAuthVal,
         user: currentUser,
-        isLogin: !!currentUser
+        isLogin: !!currentUser,
+        isLoading
     };
 }
 
