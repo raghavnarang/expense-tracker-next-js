@@ -22,6 +22,7 @@ type FirebaseAuthObj = {
     isLogin: boolean,
     loginId: string,
     isLoading: boolean,
+    token: string,
     auth: Auth
 }
 
@@ -30,6 +31,7 @@ export const defaultFirebaseAuthVal: FirebaseAuthObj = {
     isLogin: !!auth.currentUser,
     loginId: 'et-login',
     isLoading: true,
+    token: '',
     auth
 }
 
@@ -37,6 +39,7 @@ let ui: any;
 
 export const useFirebaseAuthSetup = (): FirebaseAuthObj => {
     const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+    const [token, setToken] = useState('');
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -66,6 +69,7 @@ export const useFirebaseAuthSetup = (): FirebaseAuthObj => {
         auth.onAuthStateChanged(() => {
             setCurrentUser(auth.currentUser);
             setLoading(false);
+            auth.currentUser?.getIdToken(true).then(idToken => setToken(idToken));
         });
     }, []);
 
@@ -73,6 +77,7 @@ export const useFirebaseAuthSetup = (): FirebaseAuthObj => {
         ...defaultFirebaseAuthVal,
         user: currentUser,
         isLogin: !!currentUser,
+        token,
         isLoading
     };
 }

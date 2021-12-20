@@ -1,18 +1,32 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { getApiUrl } from "../utils";
 import { useQuery } from "react-query";
 import { useRouter } from "next/router";
 
 import Group from '../types/group';
+import useAxiosConfig from "./useAxiosConfig";
 
-const fetchGroups = async () => {
-  const data = await axios.get<Group[]>(getApiUrl("group/list"));
+const fetchGroups = (config: AxiosRequestConfig) => async () => {
+  const data = await axios.get<Group[]>(getApiUrl("group/list"), config);
   return data.data;
 };
 
 const useFetchGroups = () => {
-  const query = useQuery(["group-list"], fetchGroups, { refetchOnMount: false });
-  const groups = query.data;
+  const config = useAxiosConfig();
+
+  const query = useQuery(["group-list"], fetchGroups(config), { refetchOnMount: false, enabled: !!config.headers['X-ID-Token'] });
+
+  /** Using this fake loading to wait for the Firebase ID Token fetching in progress */
+  const finalQuery = !!config.headers['X-ID-Token'] ? query : {
+    ...query,
+    isError: false,
+    isIdle: false,
+    isLoading: true,
+    isSuccess: false,
+    status: 'loading'
+  }
+
+  const groups = finalQuery.data;
 
   const router = useRouter();
   const routerSlug = Array.isArray(router.query.slug) && router.query.slug.length > 0 ? router.query.slug[0] : undefined;
@@ -26,7 +40,7 @@ const useFetchGroups = () => {
     }
   }
 
-  return { ...query, currentGroupId: currentGroup?.id, currentGroupSlug: currentGroup?.groupSlug };
+  return { ...finalQuery, currentGroupId: currentGroup?.id, currentGroupSlug: currentGroup?.groupSlug };
 };
 
 export default useFetchGroups;
