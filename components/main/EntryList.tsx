@@ -54,8 +54,8 @@ const EntryList: React.FC<propTypes> = ({ entries, refetchEntries: refetch }) =>
         </div>
     }
 
-    const onEdit = (id: number) => (message: string, amount: number) => {
-        editEntry.mutate({ id, message, amount });
+    const onEdit = (id: number) => (message: string, amount: number, date: Date) => {
+        editEntry.mutate({ id, message, amount, date: date.toISOString().split('T')[0] });
     }
 
     const onDelete = (id: number) => () => {
@@ -70,6 +70,7 @@ const EntryList: React.FC<propTypes> = ({ entries, refetchEntries: refetch }) =>
                     key={entry.id}
                     message={entry.message}
                     amount={entry.amount}
+                    date={entry.createdAt.toString().split('T')[0]}
                     onRequestEdit={onEdit(entry.id)}
                     onRequestDelete={onDelete(entry.id)} />
         )}

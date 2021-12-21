@@ -12,11 +12,13 @@ export default Entry;
 export type EntryInput = {
     message: string,
     amount: number,
-    groupId: number
+    groupId: number,
+    date: string
 }
 
 export type EditEntryInput = {
-    id: number, 
+    id: number,
     message: string,
     amount: number,
+    date: string
 };

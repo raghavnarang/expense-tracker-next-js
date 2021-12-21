@@ -6,12 +6,12 @@ import useToast from "../../hooks/useToast";
 import EntryAddComponent from '../global/EntryAdd';
 import EntrySkeleton from "../global/EntrySkeleton";
 
-const EntryAdd: React.FC<{ groupId: number, onSuccess?: ()=>void }> = ({ groupId = 0, onSuccess }) => {
+const EntryAdd: React.FC<{ groupId: number, onSuccess?: () => void }> = ({ groupId = 0, onSuccess }) => {
     const showToast = useToast();
 
     const createEntry = useCreateEntry();
-    const onCreateEntry = (message: string, amount: number) => {
-        createEntry.mutate({ message, amount, groupId });
+    const onCreateEntry = (message: string, amount: number, date: Date) => {
+        createEntry.mutate({ message, amount, groupId, date: date.toISOString().split('T')[0] });
     }
 
     const { isLoading, isError, isSuccess } = createEntry;

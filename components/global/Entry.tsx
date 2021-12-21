@@ -4,18 +4,19 @@ import EditEntry from './EditEntry';
 import TooltipConfirmation from './TooltipConfirmation';
 
 type propsType = {
-    onRequestEdit?: (message: string, amount: number) => void,
+    onRequestEdit?: (message: string, amount: number, date: Date) => void,
     onRequestDelete?: () => void,
     message: string,
-    amount: number
+    amount: number,
+    date: string
 }
 
-const Entry: React.FC<propsType> = ({ onRequestEdit, onRequestDelete, message, amount }) => {
+const Entry: React.FC<propsType> = ({ onRequestEdit, onRequestDelete, message, amount, date }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
 
-    const onEditSubmit = (message: string, amount: number) => {
-        !!onRequestEdit && onRequestEdit(message, amount);
+    const onEditSubmit = (message: string, amount: number, date: Date) => {
+        !!onRequestEdit && onRequestEdit(message, amount, date);
         setIsEdit(false);
     }
 
@@ -33,12 +34,14 @@ const Entry: React.FC<propsType> = ({ onRequestEdit, onRequestDelete, message, a
             onSubmit={onEditSubmit}
             message={message}
             amount={amount}
+            date={new Date(date)}
         />
     }
 
     return <div className={'flex items-center text-gray-700 mb-2'}>
-        <p className={'w-7/12 py-2 rounded mr-5 outline-none'}>{message}</p>
-        <p className={'w-3/12 py-2 rounded mr-5 outline-none'}>{amount}</p>
+        <p className={'w-3/12 py-2 rounded mr-5 outline-none'}>{date}</p>
+        <p className={'w-4/12 py-2 rounded mr-5 outline-none'}>{message}</p>
+        <p className={'w-3/12 py-2 rounded mr-5 outline-none'}>₹{amount}</p>
         <div className={'w-2/12'}>
             <button
                 className={'rounded-full border border-blue-500 p-1 mr-2'}

@@ -2,14 +2,14 @@ import { useState } from "react";
 import EditEntry from "./EditEntry";
 
 type propsType = {
-    onSubmit?: (message: string, amount: number) => void
+    onSubmit?: (message: string, amount: number, date: Date) => void
 }
 
 const EntryAdd: React.FC<propsType> = ({ onSubmit }) => {
     const [isAdd, setIsAdd] = useState(false);
 
-    const onEditSubmit = (message: string, amount: number) => {
-        !!onSubmit && onSubmit(message, amount);
+    const onEditSubmit = (message: string, amount: number, date: Date) => {
+        !!onSubmit && onSubmit(message, amount, date);
         setIsAdd(false);
     }
 
