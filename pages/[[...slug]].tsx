@@ -6,7 +6,7 @@ import PageCard from "../components/global/PageCard";
 import { TabsSkeleton } from "../components/global/Tabs";
 import Entries from "../components/main/Entries";
 import Tabs from "../components/main/Tabs";
-import useFirebaseAuth from "../hooks/useFirebaseAuth";
+import { useFirebaseAuthSetup, FirebaseAuthContext } from '../hooks/useFirebaseAuth';
 
 const header = <div className={'flex justify-between items-center'}>
   <h1 className={'text-2xl text-gray-700 mb-2'}>Expense Tracker</h1>
@@ -14,7 +14,7 @@ const header = <div className={'flex justify-between items-center'}>
     <a href="https://github.com/raghavnarang/expense-tracker-next-js" rel="noreferrer" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
       <TiSocialGithub color={'text-white'} size={20} className={'mr-1'} /> Frontend
     </a>
-    <a href="https://github.com/raghavnarang/expense-tracker" rel="noreferrer" target={'_blank'}  className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
+    <a href="https://github.com/raghavnarang/expense-tracker" rel="noreferrer" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
       <TiSocialGithub color={'text-white'} size={20} className={'mr-1'} /> Backend
     </a>
   </div>
@@ -27,7 +27,8 @@ const footer = <p className={'flex items-center justify-center'}>Made with ‚ù§Ô∏
 </p>
 
 const Group: NextPage = () => {
-  const { isLogin, loginId, isLoading } = useFirebaseAuth();
+  const fbAuth = useFirebaseAuthSetup();
+  const { isLogin, loginId, isLoading } = fbAuth;
 
   if (isLoading) {
     return <PageCard head={header} foot={footer}>
@@ -49,8 +50,10 @@ const Group: NextPage = () => {
   }
 
   return <PageCard head={header} foot={footer}>
-    <Tabs />
-    <Entries />
+    <FirebaseAuthContext.Provider value={fbAuth}>
+      <Tabs />
+      <Entries />
+    </FirebaseAuthContext.Provider>
   </PageCard>;
 }
 
