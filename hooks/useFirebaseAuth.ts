@@ -6,12 +6,12 @@ import { useEffect, useState, createContext, useContext } from "react";
 require('firebaseui/dist/firebaseui.css');
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBNEWQUe-dYrT2JGuOOJlrZqt26k5dSiwY",
-    authDomain: "expense-tracker-16cdf.firebaseapp.com",
-    projectId: "expense-tracker-16cdf",
-    storageBucket: "expense-tracker-16cdf.appspot.com",
-    messagingSenderId: "621402801100",
-    appId: "1:621402801100:web:6f2914ece71c930b7e9369"
+    apiKey: process.env.NEXT_PUBLIC_apiKey,
+    authDomain: process.env.NEXT_PUBLIC_authDomain,
+    projectId: process.env.NEXT_PUBLIC_projectId,
+    storageBucket: process.env.NEXT_PUBLIC_storageBucket,
+    messagingSenderId: process.env.NEXT_PUBLIC_messagingSenderId,
+    appId: process.env.NEXT_PUBLIC_appId
 };
 
 const app = initializeApp(firebaseConfig);
