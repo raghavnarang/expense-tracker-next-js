@@ -11,17 +11,17 @@ import useFirebaseAuth from "../hooks/useFirebaseAuth";
 const header = <div className={'flex justify-between items-center'}>
   <h1 className={'text-2xl text-gray-700 mb-2'}>Expense Tracker</h1>
   <div className={'flex justify-end'}>
-    <a href="https://github.com/raghavnarang/expense-tracker-next-js" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
+    <a href="https://github.com/raghavnarang/expense-tracker-next-js" rel="noreferrer" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
       <TiSocialGithub color={'text-white'} size={20} className={'mr-1'} /> Frontend
     </a>
-    <a href="https://github.com/raghavnarang/expense-tracker" target={'_blank'}  className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
+    <a href="https://github.com/raghavnarang/expense-tracker" rel="noreferrer" target={'_blank'}  className={'bg-gray-800 text-xs text-white rounded flex h-6 px-2 items-center mr-2'}>
       <TiSocialGithub color={'text-white'} size={20} className={'mr-1'} /> Backend
     </a>
   </div>
 </div>;
 
 const footer = <p className={'flex items-center justify-center'}>Made with ❤️ by
-  <a href="https://github.com/raghavnarang" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded inline-flex h-6 px-2 items-center ml-2'}>
+  <a href="https://github.com/raghavnarang" rel="noreferrer" target={'_blank'} className={'bg-gray-800 text-xs text-white rounded inline-flex h-6 px-2 items-center ml-2'}>
     <TiSocialGithub color={'text-white'} size={20} /> @raghavnarang
   </a>
 </p>
