@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Toast from '../components/global/Toast';
 import { useEffect, useRef, useState } from 'react';
 import { ToastContext } from '../utils';
+import { useFirebaseAuthSetup, FirebaseAuthContext } from '../hooks/useFirebaseAuth';
 
 const queryClient = new QueryClient();
 
@@ -22,11 +23,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [toastText]);
 
+  const fbAuth = useFirebaseAuthSetup();
+
   return <QueryClientProvider client={queryClient}>
+    <FirebaseAuthContext.Provider value={fbAuth}>
       <ToastContext.Provider value={{ showToast: setToastText }}>
         <Component {...pageProps} />
         {!!toastText && <Toast text={toastText} onClick={clearToast} />}
       </ToastContext.Provider>
+    </FirebaseAuthContext.Provider>
   </QueryClientProvider>
 }
 
